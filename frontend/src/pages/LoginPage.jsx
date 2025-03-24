@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import { useAuthStore } from '../store/useAuthStore';
@@ -10,13 +10,18 @@ const LoginPage = () => {
       email: "",
       password: "",
     });
-    const { login, isLoggingIn } = useAuthStore();
+    const { login, isLoggingIn, authUser } = useAuthStore();
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       login(formData);
-      navigate('/')
+      
     };
+    useEffect(() => {
+        if (authUser) {
+          navigate('/'); // If the user is authenticated, redirect to the home page
+        }
+      }, [authUser, navigate])
   
     return (
         <div className="h-screen grid lg:grid-cols-2">
